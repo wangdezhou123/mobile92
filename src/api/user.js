@@ -4,6 +4,19 @@ import request from '@/utils/request.js'
 // 创建各种api方法
 
 /**
+ * api:获取用户自己信息
+ * 接口文档的目标id 不用传->忽略
+ * 接口：【获取用户自己信息】
+ */
+export const apiUserInfo = () => {
+  return request({
+    url: `/app/v1_0/user`,
+    method: 'GET'
+  })
+}
+
+
+/**
  * 关注作者
  * @param {target} 被关注用户id
  */
