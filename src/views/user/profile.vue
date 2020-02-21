@@ -37,7 +37,7 @@
       <!-- 内容 -->
       <!-- 1 本地相册选择图片 -->
       <!-- 2 拍照 -->
-      <van-cell is-link title="本地相册选择图片"></van-cell>
+      <van-cell is-link title="本地相册选择图片" @click="$refs.mypic.click()"></van-cell>
       <van-cell is-link title="拍照"></van-cell>
     </van-popup>
 
@@ -76,13 +76,17 @@
         @confirm="confirmDate"
       ></van-datetime-picker>
     </van-popup>
+
+    <!-- 选择文件控件 -->
+    <input ref="mypic" @change="startUpload()" type="file" style="display:none" />
   </div>
 </template>
 
 <script>
+// 获取用户资料的api、上传用户头像的
 import dayjs from "dayjs";
 // 获取用户资料的api
-import { apiUserProfile } from "@/api/user.js";
+import { apiUserProfile, apiUserPhoto } from "@/api/user.js";
 export default {
   name: "user-profile",
   data() {
@@ -109,6 +113,21 @@ export default {
     this.getUserProfile(); // 调用获取用户资料的方法
   },
   methods: {
+    // 实现图片上传
+    async startUpload() {
+      // console.log(3333)
+
+      // 获得上传好的图片对象信息
+      // console.dir(this.$refs.mypic) // 上传文件域的dom对象(从中感知上传文件信息)
+      // 通过观察得知： this.$refs.mypic.files[0] 就是上传的文件的对象数据
+
+      const fd = new FormData(); // 创建FormData对象
+      fd.append("photo", this.$refs.mypic.files[0]); // 往FormData对象中添加参数
+      const result = await apiUserPhoto(fd);
+      // 应该 把地址 同步设置给 当前页面的数据
+      this.userProfile.photo = result.photo; // 将上传成功的头像设置给当前头像
+      this.showPhoto = false; // 关闭弹层
+    },
     // 时间选择器 被单击“确定”按钮后的回调处理
     // val:固定代表选择好的时间信息
     confirmDate(val) {
