@@ -4,6 +4,17 @@ import request from '@/utils/request.js'
 // 创建各种api方法
 
 /**
+ * 获取用户个人资料
+ */
+export function apiUserProfile() {
+  return request({
+    url: '/app/v1_0/user/profile', // 地址
+    method: 'get'
+  })
+}
+
+
+/**
  * api:获取用户自己信息
  * 接口文档的目标id 不用传->忽略
  * 接口：【获取用户自己信息】
